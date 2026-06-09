@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Trade Disruptions | Multi-Widget Scrollytelling</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@700&family=Fraunces:ital,opsz,wght=0,9..144,700;0,9..144,900;1,9..144,400&family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f4f4f6; color: #111111; }
+        .serif-display { font-family: 'Fraunces', serif; }
+        .data-mono { font-family: 'Courier Prime', monospace; }
+        
+        /* The scrolly container is isolated below the header so side panels cannot block it */
+        .scrolly-container { position: relative; width: 100%; display: flex; flex-direction: column; }
+        @media (min-width: 1024px) { .scrolly-container { flex-direction: row; } }
+        
+        .scroll-window { height: 100vh; display: flex; align-items: center; position: relative; }
+        .graphic-card { display: none; opacity: 0; transform: scale(0.96); position: absolute; width: 100%; height: 100%; }
+        .graphic-card.active { display: flex; opacity: 1; transform: scale(1); transition: opacity 0.4s ease, transform 0.4s ease; }
+    </style>
+</head>
+<body class="antialiased selection:bg-red-200 selection:text-red-900">
+
+    <div id="read-progress" class="fixed top-0 left-0 h-1 bg-red-600 z-50 w-0 transition-all duration-75"></div>
+
+    <header class="w-full min-h-screen flex flex-col justify-between p-8 md:p-16 border-b border-gray-300 bg-[#ebebef] relative z-30">
+        <div class="flex justify-between items-center text-xs font-bold uppercase tracking-wider border-b border-black pb-4 text-gray-600">
+            <span>Global Intelligence Briefing</span>
+            <span>Data Source: Statista Archive</span>
+        </div>
+        <div class="max-w-5xl my-auto space-y-6 pt-12">
+            <h1 class="serif-display text-5xl md:text-8xl font-black tracking-tight text-black leading-[0.95]">
+                Mapping the New <br><span class="text-red-600">Tariff Walls</span>
+            </h1>
+            <p class="text-xl md:text-3xl font-normal text-gray-700 max-w-3xl leading-relaxed">
+                An interactive multi-stage data investigation into supply chain friction coefficients, cross-border corporate footprints, and platform user attrition.
+            </p>
+        </div>
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-xs font-medium uppercase tracking-widest text-gray-500 pt-8">
+            <span>Scroll down to initialize the interactive graphics stack</span>
+            <span class="animate-bounce text-red-600 font-bold text-lg">↓</span>
+        </div>
+    </header>
+
+    <main class="scrolly-container">
+        
+        <div class="sticky top-0 lg:fixed lg:top-0 lg:right-0 w-full lg:w-1/2 h-[50vh] lg:h-screen z-20 p-4 lg:p-8 flex items-center justify-center bg-[#f4f4f6]">
+            <div class="w-full h-full lg:h-[85vh] bg-[#e4e4e9] border border-gray-300 rounded-lg shadow-sm p-4 lg:p-6 flex flex-col justify-between relative overflow-hidden">
+                
+                <div class="text-xs uppercase font-bold tracking-widest text-gray-500 border-b border-gray-300 pb-2 flex justify-between">
+                    <span id="widget-label" class="font-bold">Loading Dashboard Module...</span>
+                    <span id="active-zone" class="text-red-600 font-extrabold tracking-wider">-</span>
+                </div>
+
+                <div class="w-full relative flex justify-center items-center my-auto h-[80%]">
+                    
+                    <div id="card-map" class="graphic-card active flex-col justify-center items-center">
+                        <svg viewBox="0 0 1000 500" class="w-full h-full max-h-[260px] lg:max-h-none" id="world-svg">
+                            <rect x="80" y="70" width="260" height="180" rx="12" fill="#cbd5e1" class="map-land" id="land-na"/>
+                            <text x="110" y="110" class="text-sm font-black fill-slate-700 uppercase tracking-widest">North America</text>
+                            
+                            <rect x="410" y="60" width="160" height="120" rx="12" fill="#cbd5e1" class="map-land" id="land-eu"/>
+                            <text x="435" y="95" class="text-sm font-black fill-slate-700 uppercase tracking-widest">Europe</text>
+                            
+                            <rect x="610" y="80" width="310" height="230" rx="12" fill="#cbd5e1" class="map-land" id="land-asia"/>
+                            <text x="640" y="120" class="text-sm font-black fill-slate-700 uppercase tracking-widest">Asia-Pacific</text>
+
+                            <path id="flow-china-us" d="M 760 190 Q 500 20 210 160" fill="none" stroke="#94a3b8" stroke-width="4" stroke-dasharray="10,6" />
+                            <path id="active-flow-china-us" d="M 760 190 Q 500 20 210 160" fill="none" stroke="#dc2626" stroke-width="6" stroke-dasharray="1000" stroke-dashoffset="1000" />
+                            
+                            <path id="flow-us-ca" d="M 210 160 L 210 110" fill="none" stroke="#94a3b8" stroke-width="4" stroke-dasharray="8,6" />
+                            <path id="active-flow-us-ca" d="M 210 160 L 210 110" fill="none" stroke="#dc2626" stroke-width="6" stroke-dasharray="100" stroke-dashoffset="100" />
+                            
+                            <path id="flow-us-europe" d="M 210 160 Q 350 100 490 120" fill="none" stroke="#94a3b8" stroke-width="4" stroke-dasharray="8,6" />
+                            <path id="active-flow-us-europe" d="M 210 160 Q 350 100 490 120" fill="none" stroke="#dc2626" stroke-width="6" stroke-dasharray="300" stroke-dashoffset="300" />
+
+                            <circle cx="210" cy="160" r="12" fill="#111111" id="node-us"/> 
+                            <circle cx="760" cy="190" r="11" fill="#475569" id="node-china"/> 
+                            <circle cx="210" cy="110" r="9" fill="#475569" id="node-canada"/> 
+                            <circle cx="490" cy="120" r="9" fill="#475569" id="node-europe"/> 
+                        </svg>
+                        
+                        <div class="w-full grid grid-cols-3 gap-3 border-t border-gray-300 pt-3 text-center mt-6">
+                            <div class="p-2 bg-gray-200/70 rounded"><span class="block text-[10px] font-black uppercase text-gray-500 tracking-wider">Origin</span><span class="text-sm font-bold font-mono text-black" id="readout-origin">-</span></div>
+                            <div class="p-2 bg-gray-200/70 rounded"><span class="block text-[10px] font-black uppercase text-gray-500 tracking-wider">Target</span><span class="text-sm font-bold font-mono text-black" id="readout-target">-</span></div>
+                            <div class="p-2 bg-gray-200/70 rounded"><span class="block text-[10px] font-black uppercase text-gray-500 tracking-wider">Imposed Metric</span><span class="text-base font-black text-red-600 data-mono" id="readout-tariff">-</span></div>
+                        </div>
+                    </div>
+
+                    <div id="card-donut" class="graphic-card flex-col justify-center items-center space-y-6">
+                        <div class="relative w-48 h-48 lg:w-64 lg:h-64">
+                            <svg viewBox="0 0 42 42" class="w-full h-full transform -rotate-90">
+                                <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#cbd5e1" stroke-width="6"></circle>
+                                <circle id="donut-segment1" cx="21" cy="21" r="15.915" fill="transparent" stroke="#dc2626" stroke-width="6" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
+                                <circle id="donut-segment2" cx="21" cy="21" r="15.915" fill="transparent" stroke="#2563eb" stroke-width="6" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
+                            </svg>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                                <span class="text-4xl lg:text-5xl font-black data-mono text-black tracking-tight">49%</span>
+                                <span class="text-[11px] font-extrabold uppercase text-gray-600 tracking-widest mt-1">Hike Matrix</span>
+                            </div>
+                        </div>
+                        <div class="w-full grid grid-cols-2 gap-4 text-sm font-semibold pt-4 border-t border-gray-300">
+                            <div class="flex items-center gap-3"><div class="w-4 h-4 bg-red-600 rounded-sm shrink-0"></div><span class="text-gray-900">49% Raising Landed Prices</span></div>
+                            <div class="flex items-center gap-3"><div class="w-4 h-4 bg-blue-600 rounded-sm shrink-0"></div><span class="text-gray-900">24% Swapping Logistics</span></div>
+                        </div>
+                    </div>
+
+                    <div id="card-timeline" class="graphic-card flex-col justify-between h-full w-full py-2">
+                        <div class="flex justify-between items-center text-xs font-black uppercase tracking-wider text-gray-600 border-b border-gray-200 pb-2">
+                            <span>Historical Timeline Index</span>
+                            <div class="flex gap-6">
+                                <span class="flex items-center gap-2"><span class="w-3 h-3 bg-black rounded-full"></span>Temu</span>
+                                <span class="flex items-center gap-2"><span class="w-3 h-3 bg-blue-600 rounded-full"></span>Shein</span>
+                            </div>
+                        </div>
+                        
+                        <div class="w-full h-56 lg:h-72 bg-gray-200/50 border border-gray-300 rounded-lg relative px-2 pt-6">
+                            <svg viewBox="0 0 300 120" class="w-full h-full overflow-visible">
+                                <line x1="0" y1="20" x2="300" y2="20" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4,4"/>
+                                <text x="240" y="15" class="text-[9px] font-extrabold fill-slate-600 font-mono tracking-wider">35M Peak Base</text>
+                                
+                                <line x1="0" y1="95" x2="300" y2="95" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,2"/>
+                                <text x="240" y="90" class="text-[9px] font-black fill-red-600 font-mono tracking-wider">8M Cliff Limit</text>
+
+                                <path id="timeline-temu" d="M 10 23 Q 75 25 150 55 T 290 100" fill="none" stroke="#111111" stroke-width="4.5" stroke-linecap="round" stroke-dasharray="500" stroke-dashoffset="500"/>
+                                <path id="timeline-shein" d="M 10 85 Q 90 82 170 88 T 290 102" fill="none" stroke="#2563eb" stroke-width="4" stroke-linecap="round" stroke-dasharray="500" stroke-dashoffset="500"/>
+                            </svg>
+                        </div>
+                        <div class="text-[11px] text-slate-600 font-extrabold font-mono flex justify-between px-1 pt-2">
+                            <span>Q2 2024 Baseline</span>
+                            <span>Executive Order Lift</span>
+                            <span>Q2 2025 Retraction Target</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="w-full lg:w-1/2 relative z-10 px-6 md:px-16 mt-[5vh] lg:mt-0">
+            
+            <section id="panel-stage1" class="scroll-window border-b border-gray-300 py-12 lg:py-24">
+                <div class="max-w-xl space-y-6">
+                    <div class="flex items-center gap-2 text-xs font-bold text-red-600 uppercase tracking-widest">
+                        <span>Module 01 Dashboard</span>
+                        <span>•</span>
+                        <span>Page 5 & 6 Archive</span>
+                    </div>
+                    <h2 class="serif-display text-3xl md:text-5xl font-bold tracking-tight text-black">
+                        The Asymmetric Corridors
+                    </h2>
+                    <p class="text-gray-700 leading-relaxed font-light text-sm md:text-base">
+                        Following legislative adjustments, the cross-border bridge between mainland manufacturing networks and American domestic intake points became structural bottlenecks. As you scroll, note how paths leaving Asia face severe counter-tariffs compared to incoming paths.
+                    </p>
+                    
+                    <div class="space-y-4 pt-4 border-t border-gray-300">
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs font-bold uppercase tracking-wider"><span>Inbound US Tariff (From China)</span><span class="data-mono text-red-600 text-sm font-bold">55% Tariff Block</span></div>
+                            <div class="w-full bg-gray-300 h-2 rounded-sm overflow-hidden">
+                                <div id="p5-scroll-bar1" class="bg-red-600 h-full w-0"></div>
+                            </div>
+                        </div>
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs font-bold uppercase tracking-wider"><span>Outbound China Tariff (From US)</span><span class="data-mono text-black text-sm font-bold">10% Reciprocal Base</span></div>
+                            <div class="w-full bg-gray-300 h-2 rounded-sm overflow-hidden">
+                                <div id="p5-scroll-bar2" class="bg-black h-full w-0"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="panel-stage2" class="scroll-window border-b border-gray-300 py-12 lg:py-24">
+                <div class="max-w-xl space-y-6">
+                    <div class="flex items-center gap-2 text-xs font-bold text-blue-600 uppercase tracking-widest">
+                        <span>Module 02 Dashboard</span>
+                        <span>•</span>
+                        <span>Page 8 Archive</span>
+                    </div>
+                    <h2 class="serif-display text-3xl md:text-5xl font-bold tracking-tight text-black">
+                        D2C Price Elasticity Friction
+                    </h2>
+                    <p class="text-gray-700 leading-relaxed font-light text-sm md:text-base">
+                        Direct-to-consumer networks lack the diversified resource buffers of global aggregators. An April evaluation reveals a massive structural crunch: roughly 49% of operating brands have been forced to push costs directly onto consumer acquisition tiers, while 24% were forced to begin alternate supplier logistics swaps.
+                    </p>
+                    <div class="p-4 bg-blue-50 border border-blue-200 rounded text-xs text-blue-900 space-y-2">
+                        <span class="block font-bold uppercase tracking-wider">Landed Cost Adjustments Matrix</span>
+                        <p>Unlike asset-light multi-merchant platforms, separate brands maintain complete control of individual logistics loops, ensuring immediate margin exposure upon tariff updates.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="panel-stage3" class="scroll-window py-12 lg:py-24">
+                <div class="max-w-xl space-y-6">
+                    <div class="flex items-center gap-2 text-xs font-bold text-emerald-600 uppercase tracking-widest">
+                        <span>Module 03 Dashboard</span>
+                        <span>•</span>
+                        <span>Page 10 Archive</span>
+                    </div>
+                    <h2 class="serif-display text-3xl md:text-5xl font-bold tracking-tight text-black">
+                        The De Minimis Cliff Attrition
+                    </h2>
+                    <p class="text-gray-700 leading-relaxed font-light text-sm md:text-base">
+                        The revocation of the $800 duty-free <em>de minimis</em> threshold completely removed the base operational pipeline for low-cost cross-border providers. Observe the trajectory path: within months of initial policy reporting, combined monthly active user arrays completely collapsed.
+                    </p>
+                    <div class="p-4 bg-red-50 border border-red-200 rounded text-xs text-red-900">
+                        Both major Chinese marketplace mobile products dropped cleanly below the <strong>8 million active user marker</strong>, shifting ad deployment directly away from North American clusters.
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="bg-[#111111] text-[#777777] p-12 text-center text-xs tracking-widest font-mono border-t border-gray-800 relative z-30">
+        REPORT DATA EXTRACTION DIRECTIVE // STATISTA LOGISTICS RESEARCH LABS © 2026.
+    </footer>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Global Reading Progression Bar Linkage
+        gsap.to("#read-progress", {
+            width: "100%",
+            ease: "none",
+            scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: true }
+        });
+
+        /* DISPLAY CAPTURE CONTROLLER FUNCTION */
+        function displayModule(activeCardId, activeWidgetLabel, activeZoneText) {
+            document.querySelectorAll('.graphic-card').forEach(card => card.classList.remove('active'));
+            document.getElementById(activeCardId).classList.add('active');
+            document.getElementById('widget-label').textContent = activeWidgetLabel;
+            document.getElementById('active-zone').textContent = activeZoneText;
+        }
+
+        /* ==========================================================
+           ORCHESTRATION 01: MODULE 1 (MAP CORRIDORS)
+           ========================================================== */
+        ScrollTrigger.create({
+            trigger: "#panel-stage1",
+            start: "top center",
+            end: "bottom center",
+            onEnter: () => {
+                displayModule('card-map', 'Live Cartographic Vector Feed', 'CHINA ➔ US TRANSIT');
+                updateReadout("CHINA", "UNITED STATES", "55% TARIFF");
+            },
+            onEnterBack: () => {
+                displayModule('card-map', 'Live Cartographic Vector Feed', 'CHINA ➔ US TRANSIT');
+                updateReadout("CHINA", "UNITED STATES", "55% TARIFF");
+            }
+        });
+
+        gsap.timeline({
+            scrollTrigger: { trigger: "#panel-stage1", start: "top top", end: "bottom top", pin: true, scrub: 0.5 }
+        })
+        .to("#p5-scroll-bar1", { width: "55%", ease: "none" })
+        .to("#p5-scroll-bar2", { width: "10%", ease: "none" }, "<")
+        .to("#active-flow-china-us", { strokeDashoffset: 0, ease: "none" }, "<")
+        .to("#node-china", { fill: "#dc2626", scale: 1.3, duration: 0.2 }, "<")
+        .to("#node-us", { fill: "#dc2626", scale: 1.3, duration: 0.2 }, "-=0.3");
+
+        /* ==========================================================
+           ORCHESTRATION 02: MODULE 2 (D2C IMPACT DONUT)
+           ========================================================== */
+        ScrollTrigger.create({
+            trigger: "#panel-stage2",
+            start: "top center",
+            end: "bottom center",
+            onEnter: () => displayModule('card-donut', 'Corporate Operations Allocation Metric', 'D2C RESPONSE SPLIT'),
+            onEnterBack: () => displayModule('card-donut', 'Corporate Operations Allocation Metric', 'D2C RESPONSE SPLIT')
+        });
+
+        gsap.timeline({
+            scrollTrigger: { trigger: "#panel-stage2", start: "top top", end: "bottom top", pin: true, scrub: 0.5 }
+        })
+        .to("#donut-segment1", { strokeDasharray: "49 100", ease: "power2.out" })
+        .to("#donut-segment2", { strokeDasharray: "24 100", strokeDashoffset: "-49", ease: "power2.out" }, "-=0.2");
+
+        /* ==========================================================
+           ORCHESTRATION 03: MODULE 3 (TIMELINE ENGAGEMENT MATRIX)
+           ========================================================== */
+        ScrollTrigger.create({
+            trigger: "#panel-stage3",
+            start: "top center",
+            end: "bottom center",
+            onEnter: () => displayModule('card-timeline', 'Audience Volatility Matrix', 'MAU ATTENUATION TREND'),
+            onEnterBack: () => displayModule('card-timeline', 'Audience Volatility Matrix', 'MAU ATTENUATION TREND')
+        });
+
+        gsap.timeline({
+            scrollTrigger: { trigger: "#panel-stage3", start: "top top", end: "bottom top", pin: true, scrub: 0.5 }
+        })
+        .to("#timeline-temu", { strokeDashoffset: 0, ease: "none" })
+        .to("#timeline-shein", { strokeDashoffset: 0, ease: "none" }, "<");
+
+        /* READOUT UPDATER HELPER */
+        function updateReadout(origin, target, tariff) {
+            document.getElementById("readout-origin").textContent = origin;
+            document.getElementById("readout-target").textContent = target;
+            document.getElementById("readout-tariff").textContent = tariff;
+        }
+    </script>
+</body>
+</html>
