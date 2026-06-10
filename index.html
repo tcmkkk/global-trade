@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Trade Disruptions | Pinned Reading Scrollytelling</title>
+    <title>Global Trade Disruptions | Optimized Dual-Axis Scrollytelling</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,24 +16,23 @@
         .serif-display { font-family: 'Fraunces', serif; }
         .data-mono { font-family: 'Courier Prime', monospace; }
         
-        /* Containers */
+        /* Layout split container */
         .scrolly-container { position: relative; width: 100%; display: flex; flex-direction: column; }
         @media (min-width: 1024px) { .scrolly-container { flex-direction: row; } }
         
-        /* Left side content blocks */
-        /*.scroll-window { 
-            height: 100vh; 
+        /* EXACT match to your attached file's flex centering, with just the mobile height separated */
+        .scroll-window { 
+            min-height: 60vh; 
             display: flex; 
             align-items: center; 
             position: relative;
             box-sizing: border-box;
-        }*/
-        .scroll-window {
-            align-items: flex-start;
-            padding-top: 5rem; /* Adjust as needed */
+        }
+        @media (min-width: 1024px) {
+            .scroll-window { height: 100vh; }
         }
         
-        /* The Dashboard container starts completely shrunk */
+        /* Dashboard Container Base Frame */
         #dashboard-container {
             opacity: 0;
             transform: scale(0);
@@ -41,7 +40,7 @@
             will-change: transform, opacity;
         }
 
-        /* Swappable internal graphic cards layout rules */
+        /* Swappable Internal Graphic Cards */
         .widget-wrapper {
             width: 100%;
             height: 100%;
@@ -79,11 +78,11 @@
 
     <main class="scrolly-container">
         
-        <div class="sticky top-0 lg:fixed lg:top-0 lg:right-0 w-full lg:w-1/2 h-[50vh] lg:h-screen z-20 p-4 lg:p-8 flex items-center justify-center bg-[#f4f4f6]">
+        <div class="fixed top-0 left-0 w-full h-[40vh] lg:fixed lg:top-0 lg:left-auto lg:right-0 lg:w-1/2 lg:h-screen z-20 p-4 lg:p-8 flex items-center justify-center bg-[#f4f4f6]">
             
             <div id="dashboard-container" class="w-full h-full lg:h-[85vh] bg-[#e4e4e9] border border-gray-300 rounded-lg shadow-sm p-4 lg:p-6 flex flex-col justify-between relative overflow-hidden">
                 
-                <div class="text-xs uppercase font-bold tracking-widest text-gray-500 border-b border-gray-300 pb-2 flex justify-between">
+                <div class="text-[10px] lg:text-xs uppercase font-bold tracking-widest text-gray-500 border-b border-gray-300 pb-2 flex justify-between">
                     <span id="widget-label" class="font-bold">Awaiting Pipeline Pinning Execution...</span>
                     <span id="active-zone" class="text-red-600 font-extrabold tracking-wider">-</span>
                 </div>
@@ -91,7 +90,7 @@
                 <div class="w-full h-[85%] relative grid grid-rows-1 grid-cols-1 items-center justify-center">
                     
                     <div id="block-map" class="widget-wrapper row-start-1 col-start-1">
-                        <svg viewBox="0 0 1000 500" class="w-full h-full max-h-[240px] lg:max-h-none" id="world-svg">
+                        <svg viewBox="0 0 1000 500" class="w-full h-full max-h-[140px] lg:max-h-none" id="world-svg">
                             <rect x="80" y="70" width="260" height="180" rx="12" fill="#cbd5e1"/>
                             <text x="110" y="110" class="text-sm font-black fill-slate-700 uppercase tracking-widest">North America</text>
                             
@@ -123,21 +122,21 @@
                         </div>
                     </div>
 
-                    <div id="block-donut" class="widget-wrapper row-start-1 col-start-1 h-full flex flex-col justify-center items-center space-y-6">
-                        <div class="relative w-48 h-48 lg:w-64 lg:h-64">
+                    <div id="block-donut" class="widget-wrapper row-start-1 col-start-1 h-full flex flex-col justify-center items-center space-y-4 lg:space-y-6">
+                        <div class="relative w-28 h-28 lg:w-64 lg:h-64">
                             <svg viewBox="0 0 42 42" class="w-full h-full transform -rotate-90">
                                 <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#cbd5e1" stroke-width="6"></circle>
                                 <circle id="donut-segment1" cx="21" cy="21" r="15.915" fill="transparent" stroke="#dc2626" stroke-width="6" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
                                 <circle id="donut-segment2" cx="21" cy="21" r="15.915" fill="transparent" stroke="#2563eb" stroke-width="6" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
                             </svg>
                             <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-                                <span class="text-4xl lg:text-5xl font-black data-mono text-black tracking-tight">49%</span>
+                                <span class="text-3xl lg:text-5xl font-black data-mono text-black tracking-tight">49%</span>
                                 <span class="text-[11px] font-extrabold uppercase text-gray-600 tracking-widest mt-1">Hike Matrix</span>
                             </div>
                         </div>
-                        <div class="w-full grid grid-cols-2 gap-4 text-sm font-semibold pt-4 border-t border-gray-300">
-                            <div class="flex items-center gap-3"><div class="w-4 h-4 bg-red-600 rounded-sm shrink-0"></div><span class="text-gray-900">49% Raising Landed Prices</span></div>
-                            <div class="flex items-center gap-3"><div class="w-4 h-4 bg-blue-600 rounded-sm shrink-0"></div><span class="text-gray-900">24% Swapping Logistics</span></div>
+                        <div class="w-full grid grid-cols-2 gap-4 text-xs lg:text-sm font-semibold pt-4 border-t border-gray-300">
+                            <div class="flex items-center gap-3"><div class="w-4 h-4 bg-red-600 rounded-sm shrink-0"></div><span class="text-gray-900 truncate">49% Raising Landed Prices</span></div>
+                            <div class="flex items-center gap-3"><div class="w-4 h-4 bg-blue-600 rounded-sm shrink-0"></div><span class="text-gray-900 truncate">24% Swapping Logistics</span></div>
                         </div>
                     </div>
 
@@ -150,13 +149,13 @@
                             </div>
                         </div>
                         
-                        <div class="w-full h-56 lg:h-72 bg-gray-200/50 border border-gray-300 rounded-lg relative px-2 pt-6 my-auto">
+                        <div class="w-full h-32 lg:h-72 bg-gray-200/50 border border-gray-300 rounded-lg relative px-2 pt-6 my-auto">
                             <svg viewBox="0 0 300 120" class="w-full h-full overflow-visible">
                                 <line x1="0" y1="20" x2="300" y2="20" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4,4"/>
-                                <text x="240" y="15" class="text-[9px] font-extrabold fill-slate-600 font-mono tracking-wider">35M Peak Base</text>
+                                <text x="240" y="15" class="hidden lg:inline text-[9px] font-extrabold fill-slate-600 font-mono tracking-wider">35M Peak Base</text>
                                 
                                 <line x1="0" y1="95" x2="300" y2="95" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,2"/>
-                                <text x="240" y="90" class="text-[9px] font-black fill-red-600 font-mono tracking-wider">8M Cliff Limit</text>
+                                <text x="240" y="90" class="hidden lg:inline text-[9px] font-black fill-red-600 font-mono tracking-wider">8M Cliff Limit</text>
 
                                 <path id="timeline-temu" d="M 10 23 Q 75 25 150 55 T 290 100" fill="none" stroke="#111111" stroke-width="4.5" stroke-linecap="round" stroke-dasharray="500" stroke-dashoffset="500"/>
                                 <path id="timeline-shein" d="M 10 85 Q 90 82 170 88 T 290 102" fill="none" stroke="#2563eb" stroke-width="4" stroke-linecap="round" stroke-dasharray="500" stroke-dashoffset="500"/>
@@ -164,8 +163,8 @@
                         </div>
                         <div class="text-[11px] text-slate-600 font-extrabold font-mono flex justify-between px-1 pt-2 border-t border-gray-200">
                             <span>Q2 2024 Baseline</span>
-                            <span>Executive Order Lift</span>
-                            <span>Q2 2025 Retraction Target</span>
+                            <span class="hidden sm:inline">Executive Order Lift</span>
+                            <span>Q2 2025 Target</span>
                         </div>
                     </div>
 
@@ -174,10 +173,10 @@
             </div>
         </div>
 
-        <div class="w-full lg:w-1/2 relative z-10 px-6 md:px-16">
+        <div class="w-full lg:w-1/2 relative z-10 px-6 md:px-16 pt-[42vh] lg:pt-0">
             
             <section id="panel-stage1" class="scroll-window border-b border-gray-300">
-                <div class="max-w-xl space-y-6 py-12">
+                <div class="max-w-xl space-y-6 py-12 w-full">
                     <div class="flex items-center gap-2 text-xs font-bold text-red-600 uppercase tracking-widest">
                         <span>Module 01 Dashboard</span>
                         <span>•</span>
@@ -208,7 +207,7 @@
             </section>
 
             <section id="panel-stage2" class="scroll-window border-b border-gray-300">
-                <div class="max-w-xl space-y-6 py-12">
+                <div class="max-w-xl space-y-6 py-12 w-full">
                     <div class="flex items-center gap-2 text-xs font-bold text-blue-600 uppercase tracking-widest">
                         <span>Module 02 Dashboard</span>
                         <span>•</span>
@@ -228,7 +227,7 @@
             </section>
 
             <section id="panel-stage3" class="scroll-window">
-                <div class="max-w-xl space-y-6 py-12">
+                <div class="max-w-xl space-y-6 py-12 w-full">
                     <div class="flex items-center gap-2 text-xs font-bold text-emerald-600 uppercase tracking-widest">
                         <span>Module 03 Dashboard</span>
                         <span>•</span>
@@ -256,10 +255,9 @@
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
-        // Global Reading Progression Bar
+        // Global progress indicator bar
         gsap.to("#read-progress", {
-            width: "100%",
-            ease: "none",
+            width: "100%", ease: "none",
             scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: true }
         });
 
@@ -280,13 +278,19 @@
             document.getElementById('active-zone').textContent = statusLabel;
         }
 
+        // Detect viewport conditions
+        const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
+        
+        // Pinning start anchors synchronized to original configuration guidelines
+        const cleanStartAnchor = isDesktop ? "top top" : "top 42%";
+
         /* ==========================================================
-           ORCHESTRATION 01: PINNED SECTION 1
+           ORCHESTRATION 01: MODULE STAGE 1
            ========================================================== */
         const mapTimeline = gsap.timeline({
             scrollTrigger: {
                 trigger: "#panel-stage1",
-                start: "top top",      
+                start: cleanStartAnchor,
                 end: "+=100%",         
                 pin: true,             
                 scrub: 0.5,
@@ -314,12 +318,12 @@
 
 
         /* ==========================================================
-           ORCHESTRATION 02: PINNED SECTION 2
+           ORCHESTRATION 02: MODULE STAGE 2
            ========================================================== */
         const donutTimeline = gsap.timeline({
             scrollTrigger: {
                 trigger: "#panel-stage2",
-                start: "top top",
+                start: cleanStartAnchor,
                 end: "+=100%",
                 pin: true,
                 scrub: 0.5,
@@ -342,12 +346,12 @@
 
 
         /* ==========================================================
-           ORCHESTRATION 03: PINNED SECTION 3
+           ORCHESTRATION 03: MODULE STAGE 3
            ========================================================== */
         const timelineTimeline = gsap.timeline({
             scrollTrigger: {
                 trigger: "#panel-stage3",
-                start: "top top",
+                start: cleanStartAnchor,
                 end: "+=100%",
                 pin: true,
                 scrub: 0.5,
